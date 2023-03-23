@@ -11,7 +11,7 @@ int main()
     int n;
     cin >> n;
     int height[500001];
-    memset(height, 0, 500001);
+    memset(height, 0, sizeof(int) * 500001);
     int i;
     i = 1;
     while(i <= n)
