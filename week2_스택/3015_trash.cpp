@@ -2,25 +2,16 @@
 #include <stack>
 using namespace std;
 
-void solve(int n);
-
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     
-    int n;
-    cin >> n;
-    solve(n);
-}
-
-void solve(int n)
-{
-    int el, i, num;
+    int n, el, i, j, k;
     int arr[500001];
     long long sum;
-    stack< pair<int, int> > s;
-
+    cin >> n;
+    sum = 0;
     i = 0;
     while(i < n)
     {
@@ -29,28 +20,25 @@ void solve(int n)
         i++;
     }
     i = 0;
-    while(i < n)
+    while(i < n - 1)
     {
-        num = 1;
-        while(s.size() && s.top().first <= arr[i])
+        j = i + 1;
+        while(j < n)
         {
-            if(s.top().first == arr[i])
+            if(j - i > 1)
             {
-                num = s.top().second + 1;
-                sum += s.top().second;
-                s.pop();
+                k = i + 1;
+                while(arr[i] >= arr[k] && arr[k] <= arr[j] && k < j)
+                    k++;
+                if (k == j)
+                    sum++;
             }
             else
             {
-                sum += s.top().second;
-                s.pop();
-                num = 1;
+                sum++;
             }
+            j++;
         }
-        if(s.size())
-           sum++;
-        s.push({arr[i], num}); //-std=c++11
-        // s.push(make_pair(arr[i], num));
         i++;
     }
     cout << sum;
