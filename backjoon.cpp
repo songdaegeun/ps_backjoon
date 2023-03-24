@@ -21,13 +21,13 @@ int main()
 
 void solve(int n)
 {
-    int i, el, num;
+    int i, el, num, height, width;
     long long max, space;
     max = -1;
     int arr[100000];
     memset(arr, 0, sizeof(int) * 100000);
     
-    stack< pair<int,int> > s;
+    stack<int> s;
     i = 0;
     while(i < n)
     {
@@ -35,47 +35,31 @@ void solve(int n)
         arr[i] = el;
         i++;
     }
-    i = n - 1;
-    while(i > -1)
+	i = 0;
+    while(i < n)
     {
-        num = 1;        
-        while(s.size() && s.top().first >= arr[i]) //순증가
-        {
-            num = s.top().second + 1;
-            s.pop();
-        }
-        space = (long long)num * arr[i]; // 우측 방향
-
-        if(max < space) max = space;
-        s.push(make_pair(arr[i], num));
-        i--;
-    }
-    while(s.size())
-    {
-        space = (long long)s.top().second * s.top().first;
-        if(max < space) max = space;
-        s.pop();
-    }
+		while(s.size() && arr[s.top()] > arr[i])
+		{
+			height = arr[s.top()];
+			s.pop();
+			width = i;
+			if(s.size())
+				width = i - s.top() - 1;
+			if(max < (long long)height * width)
+				max = (long long)height * width;
+		}
+		s.push(i);
+        i++;
+}
+	while(s.size())
+	{
+		height = arr[s.top()];
+		s.pop();
+		width = n;
+		if(s.size())
+			width = n - s.top() - 1;
+		if(max < (long long)height * width)
+			max = (long long)height * width;
+	}
     cout << max << '\n';
 }
-
-// 8
-// 20
-// 20
-// 1
-// 1
-// 8
-// 4000
-// 5000000000  
-// 0
-// 14
-// 12
-// 1250000000
-// 625000000
-// 2437
-// 1275   << @           
-// 10 593 532 425 137 647 231 84 698 421 378
-// sol: 425*3 = 1275
-// my: 532*2 = 1064
-
-// 15
