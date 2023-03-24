@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stack>
+#include <string.h>
 using namespace std;
 
 void solve(int n);
@@ -10,17 +11,23 @@ int main()
     cin.tie(0);
     
     int n;
-    cin >> n;
-    solve(n);
+    while(1)
+    {
+        cin >> n; 
+        if(n == 0) break; 
+        solve(n);
+    }
 }
 
 void solve(int n)
 {
-    int el, i, num;
-    int arr[500001];
-    long long sum;
-    stack< pair<int, int> > s;
-
+    int i, el, num;
+    long long max, space;
+    max = -1;
+    int arr[100000];
+    memset(arr, 0, sizeof(int) * 100000);
+    
+    stack< pair<int,int> > s;
     i = 0;
     while(i < n)
     {
@@ -28,199 +35,47 @@ void solve(int n)
         arr[i] = el;
         i++;
     }
-    i = 0;
-    while(i < n)
+    i = n - 1;
+    while(i > -1)
     {
-        num = 1;
-        while(s.size() && s.top().first <= arr[i])
+        num = 1;        
+        while(s.size() && s.top().first >= arr[i]) //순증가
         {
-            if(s.top().first == arr[i])
-            {
-                num = s.top().second + 1;
-                sum += s.top().second;
-                s.pop();
-            }
-            else
-            {
-                sum += s.top().second;
-                s.pop();
-                num = 1;
-            }
+            num = s.top().second + 1;
+            s.pop();
         }
-        if(s.size())
-           sum++;
-        s.push({arr[i], num}); //-std=c++11
-        // s.push(make_pair(arr[i], num));
-        i++;
+        space = (long long)num * arr[i]; // 우측 방향
+
+        if(max < space) max = space;
+        s.push(make_pair(arr[i], num));
+        i--;
     }
-    cout << sum;
+    while(s.size())
+    {
+        space = (long long)s.top().second * s.top().first;
+        if(max < space) max = space;
+        s.pop();
+    }
+    cout << max << '\n';
 }
 
-// // 입력 1
-// 5
-// 5 5 2 2 5
-
-// // 출력 1
 // 8
-
-
-
-// // 입력 2
-// 5
-// 5 5 2 1 5
-
-// // 출력 2
-// 7
-
-
-
-// // 입력 3
-// 5
-// 5 3 1 3 7
-
-// // 출력 3
-// 8
-
-
-
-// // 입력 4
-// 5
-// 3 2 2 1 2
-
-// // 출력 4
-// 8
-
-
-
-// // 입력 5
-// 5
-// 4 1 2 2 5
-
-// // 출력 5
-// 8
-
-
-
-// // 입력 6
-// 5
-// 4 1 2 3 5
-
-// // 출력 6
-// 7
-
-
-
-// // 입력 7
-// 5
-// 4 1 2 3 5
-
-// // 출력 7
-// 7
-
-
-
-// // 입력 8
-// 5
-// 4 1 2 2 1
-
-// // 출력 8
-// 6
-
-
-
-// // 입력 9
-// 5
-// 4 1 2 3 1
-
-// // 출력 9
-// 6
-
-
-
-// // 입력 10
-// 4
-// 7 7 7 7
-
-// // 출력 10
-// 6
-
-
-
-// // 입력 11
-// 6
-// 6 6 6 5 2 5
-
-// // 출력 11
-// 8
-
-
-
-// // 입력 12
-// 4
-// 4 3 1 2
-
-// // 출력 12
-// 4
-
-
-
-// // 입력 13
-// 2
-// 3 3
-
-// // 출력 13
+// 20
+// 20
 // 1
-
-
-
-// // 입력 14
-// 4
-// 4 4 1 2
-
-// // 출력 14
-// 4
-
-
-
-// // 입력 15
-// 3
-// 3 2 1
-
-// // 출력 15
-// 2
-
-
-
-// // 입력 16
-// 4
-// 1 2 2 1
-
-// // 출력 16
-// 3
-
-
-
-// // 입력 17
-// 5
-// 1 2 2 2 1
-
-// // 출력 17
-// 5
-
-
-
-// // 입력 18
-// 3
-// 5 5 2
-
-// // 출력 18
-// 2
-
-
-
-// // 입력 19
-// 5
-// 5 3 1 3 7
-
-// // 출력 19
+// 1
 // 8
+// 4000
+// 5000000000  
+// 0
+// 14
+// 12
+// 1250000000
+// 625000000
+// 2437
+// 1275   << @           
+// 10 593 532 425 137 647 231 84 698 421 378
+// sol: 425*3 = 1275
+// my: 532*2 = 1064
+
+// 15
