@@ -1,5 +1,5 @@
 #include <iostream>
-#include <queue>
+#include <deque>
 using namespace std;
 
 int main()
@@ -7,20 +7,13 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
     
-    queue<int> q;
-    int n, i, res;
+    deque<int> deq;
+    string str;
+    int n, data;
+
     cin >> n;
-    i = 1; 
-    while(i <= n)
+    while(n--)
     {
-        q.push(i);
-        i++;
+      
     }
-    while(q.size() > 1)
-    {
-        q.pop();
-        q.push(q.front());
-        q.pop();
-    }
-    cout << q.front();
 }
