@@ -12,18 +12,20 @@ int main()
     stack<char> three_stk;
     string str;
     int res = 0;
-    char c;
+    int two_flag = 1;
+    int three_flag = 1;
 
     cin >> str;
-    for(int i = 0; str[i]; i++)
+    for(auto c:str)
     {
-        c = str[i];
         if (c == '(')
         {
+            two_flag = 1;
             two_stk.push(c);
         }
         else if(c == '[')
         {
+            three_flag = 1;
             three_stk.push(c);
         }
         else
@@ -32,9 +34,12 @@ int main()
             {
                 if(!two_stk.empty() && two_stk.top() == '(')
                 {
-                    if (str[i - 1] == '(')
+                    // 계산
+                    if (two_flag == 1)
                     {
                         res += pow(2, two_stk.size()) * pow(3, three_stk.size());
+                        two_flag = 0;
+                        three_flag = 0;
                     }
                     two_stk.pop();
                 }
@@ -48,9 +53,12 @@ int main()
             {
                 if(!three_stk.empty() && three_stk.top() == '[')
                 {
-                    if (str[i - 1] == '[')
+                    // 계산
+                    if (three_flag == 1)
                     {
-                        res += pow(2, two_stk.size()) * pow(3, three_stk.size());
+                       res += pow(2, two_stk.size()) * pow(3, three_stk.size());
+                       three_flag = 0;
+                       two_flag = 0;
                     }
                     three_stk.pop();
                 }
