@@ -8,11 +8,11 @@ int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 deque< pair<int, int> > cctv;
 int unvisible_sp = 0;
-int s_x = 0, s_y = 0;
+int size_x, size_y;
 
 int is_oob(int x, int y)
 {
-    return (x < 0 || x >= 2 || y < 0 || y >= 3);
+    return (x < 0 || x > size_x || y < 0 || y > size_y);
 }
 
 void full_dir(int x, int y, int dir)
@@ -36,10 +36,10 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    cin >> s_x >> s_y;
-    for(int i = 0; i < s_x; i++)
+    cin >> size_x >> size_y;
+    for(int i = 0; i < size_x; i++)
     {
-        for(int j = 0; j < s_y; j++)
+        for(int j = 0; j < size_y; j++)
         {
             cin >> origin_map[i][j];
             if (origin_map[i][j] != 0 && origin_map[i][j] !=6)
@@ -48,7 +48,6 @@ int main()
                 unvisible_sp++;
         }
     }
-    cout << "here";
     check_map();
     cout << unvisible_sp;
 }
@@ -57,8 +56,8 @@ void check_map()
 {
     if (cctv.empty())
     {
-        for(int i = 0; i < 0; i++)
-            for(int j = 0; j < 0; j++)
+        for(int i = 0; i < size_x; i++)
+            for(int j = 0; j < size_y; j++)
                 temp_map[i][j] = origin_map[i][j];
         return;
     }
@@ -96,9 +95,9 @@ void check_map()
             full_dir(x, y, i + 3);
         }
         int tmp = 0;
-        for(int i = 0; i < 0; i++)
+        for(int i = 0; i < size_x; i++)
         {
-            for(int j = 0; j < 0; j++)
+            for(int j = 0; j < size_y; j++)
             {
                 if(temp_map[i][j] == 0)
                     tmp++;
