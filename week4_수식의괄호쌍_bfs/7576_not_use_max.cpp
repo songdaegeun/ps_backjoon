@@ -20,27 +20,34 @@ int main()
     int date[1000][1000];
     int dx[4] = {1, 0, -1, 0};
     int dy[4] = {0, 1, 0, -1};
-    int min_date = -1;
-    queue<pair<int, int>> q;
-    memset(date, 0, sizeof(int) * 1000 * 1000);
+
+    memset(date, -1, sizeof(int) * 1000 * 1000);
     cin >> m >> n;
     for(int i = 0; i < n; i++)
     {
         for(int j = 0; j < m; j++)
         {
             cin >> map[i][j];
-            if (map[i][j] == 1)
-                q.push({i, j});
-            if (map[i][j] == 0)
-                date[i][j] = -1;
         }
     }
+    queue<pair<int, int>> q;
+    for(int i = 0; i < n; i++)
+    {
+        for(int j = 0; j < m; j++)
+        {
+            if(!(date[i][j] == -1 && map[i][j] == 1)) continue;
+            date[i][j] = 0;
+            q.push({i, j});
+        }
+    }
+    int min_date = -1;
     while(!q.empty())
     {
         pair<int,int> pos = q.front();
         q.pop();
         int x = pos.first;
         int y = pos.second;
+        min_date = date[x][y];
         for(int i = 0; i < 4; i++)
         {
             int nx = x + dx[i];
@@ -56,15 +63,13 @@ int main()
     {
         for(int j = 0; j < m; j++)
         {
-            if (date[i][j] == -1)
+            if (map[i][j] == 0 && date[i][j] == -1)
             {
                 min_date = -1;
-                cout << min_date;
-                return (0);
+                break;
             }
-            if (min_date < date[i][j])
-                min_date = date[i][j];
         }
     }
     cout << min_date;
+
 }
