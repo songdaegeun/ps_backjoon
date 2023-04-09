@@ -23,16 +23,16 @@ int main()
         for (int i = 0; i < 3; i++)
         {
             int next_pos = next_pos_arr[i];
-            // if(next_pos == k)
-            // {
-            //     cout << dist[pos] + 1;
-            //     return 0;
-            // }
+            if(next_pos == k)       // 항상 next_pos에서 k에 도달했는지를 확인할 수 있기 때문에, k와 n이 동일한 경우 시작하자마자 k에 도달한 것을 알 수 없을 뿐 아니라  탈출 조건이 없음.
+            {
+                cout << dist[pos] + 1;
+                return 0;
+            }
             if(next_pos < 0 || next_pos > 100000) continue;
             if(dist[next_pos] != -1) continue;
             dist[next_pos] = dist[pos] + 1;
             q.push(next_pos);
         }
     }
-    cout << dist[k];
+    // cout << dist[k];
 }

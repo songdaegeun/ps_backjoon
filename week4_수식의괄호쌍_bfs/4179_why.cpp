@@ -93,7 +93,7 @@ int main()
 		{
 			if(!(i == 0 || i == n - 1) && !(j == 0 || j == m - 1))
 				continue;
-			if(map[i][j] == '.' && j_dist[i][j] != 0 && j_dist[i][j] < min)
+			if(map[i][j] == '.' && j_dist[i][j] != 0 && j_dist[i][j] < min)	// 'J'의 시작 포인트가 가장자리인 경우, .이 아니지만 min은 1으로 답이 나올 수 있음
 				min = j_dist[i][j];
 		}
 	}
