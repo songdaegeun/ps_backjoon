@@ -70,7 +70,7 @@ int main()
 		if(dist[get<0>(e_pt)][get<1>(e_pt)][get<2>(e_pt)] == -1)
 			cout << "Trapped!\n";
 		else
-			cout << "Escaped in " << dist[get<0>(e_pt)][get<1>(e_pt)][get<2>(e_pt)] <<  "minute(s).\n";
+			cout << "Escaped in " << dist[get<0>(e_pt)][get<1>(e_pt)][get<2>(e_pt)] <<  " minute(s).\n";
 	}
 }
 
