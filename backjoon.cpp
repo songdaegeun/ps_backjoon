@@ -56,22 +56,35 @@ void mov_map(int tmp_map[][21], int dir)
 			{
 				for(int j = n - 1 - k; j >= 0; j--)
 				{
-					int cmp = tmp_map[i][j - 1];
-					int l;
-					for(l = j - 1; cmp == 0 && l >= 0; l--)
+					int cmp, l;
+					if(j != 0)
 					{
-						cmp = tmp_map[i][l];;
+						cmp = tmp_map[i][j - 1];
+						
+						for(l = j - 1; cmp == 0 && l >= 0; l--)
+						{
+							cmp = tmp_map[i][l];;
+						}
 					}
-					if (j != 0 && !can_mov && ((tmp_map[i][j] == cmp) || tmp_map[i][j] == 0))
+					if (j != 0 && ((tmp_map[i][j] == cmp) || tmp_map[i][j] == 0))
 					{
+						// cout << "i,j,cmp: " << i << ' ' << j << ' ' << cmp << '\n';
 						can_mov = 1;
 						tmp_map[i][j] += tmp_map[i][l];
 						tmp_map[i][l] = 0;
 					}
 					else if (j == 0 && can_mov)
+					{
+						// cout << "[j == 0]i,j: " << i << ' ' << j << '\n';
 						tmp_map[i][j] = 0;
+					}
 					else if (j != 0 && can_mov)
+					{
+						// cout << "[j != 0 ]i,j,cmp: " << i << ' ' << j << ' ' << cmp << '\n';
 						tmp_map[i][j] = cmp;
+					}
+					disp_map(tmp_map);
+					cout << "k, j:" << k << ' ' << j << '\n';
 				}
 			}
 		}
@@ -174,7 +187,8 @@ int brute_force(int depth, int *max, int tmp_map[][21])
 		int backup_map[21][21];
 		copy_map(backup_map, tmp_map);
 		mov_map(tmp_map, dir);
-		disp_map(tmp_map);
+		// cout << "disp: " << dir << '\n';
+		// disp_map(tmp_map);
 		int max_el = search_max(tmp_map);
 		*max = std::max(max_el, *max);
 		brute_force(depth + 1, max, tmp_map);
@@ -209,3 +223,10 @@ int main()
 // 2 2 2
 // 4 4 4
 // 8 8 8
+
+
+// 4
+// 2 2 2 2
+// 2 2 2 2
+// 4 4 4 4
+// 4 4 4 4
