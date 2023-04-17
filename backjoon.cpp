@@ -6,9 +6,9 @@ using namespace std;
 
 int n;
 int map[21][21];
-int mov_num = 5;
+int mov_num = 1;
 
-void disp_map()
+void disp_map(int map[][21])
 {
 	cout << '\n';
 	for(int i = 0; i < n; i++)
@@ -34,13 +34,13 @@ int search_max(int map[][21])
 	return (max);
 }
 
-void copy_map(int tmp_map[][21])
+void copy_map(int dst_map[][21], int src_map[][21])
 {
 	for(int i = 0; i < n; i++)
 	{
 		for(int j = 0; j < n; j++)
 		{
-			tmp_map[i][j] = map[i][j];
+			dst_map[i][j] = src_map[i][j];
 		}
 	}
 }
@@ -168,17 +168,17 @@ void mov_map(int tmp_map[][21], int dir)
 int brute_force(int depth, int *max, int tmp_map[][21])
 {
 	if(depth == mov_num)
-	{
-		copy_map(tmp_map);
 		return (0);
-	}
 	for(int dir = 0; dir < 4; dir++)
 	{
-		// tmp_map을 각 방향으로 민다.
+		int backup_map[21][21];
+		copy_map(backup_map, tmp_map);
 		mov_map(tmp_map, dir);
+		disp_map(tmp_map);
 		int max_el = search_max(tmp_map);
 		*max = std::max(max_el, *max);
 		brute_force(depth + 1, max, tmp_map);
+		copy_map(tmp_map, backup_map);
 	}
 	return (*max);
 }
@@ -201,7 +201,7 @@ int main()
 	// max를 출력한다.
 	int max = 0;
 	int tmp_map[21][21];
-	copy_map(tmp_map);
+	copy_map(tmp_map, map);
 	cout << brute_force(0, &max, tmp_map);
 }
 
