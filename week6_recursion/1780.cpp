@@ -17,6 +17,7 @@ void disp_map()
 		cout << '\n';
 	}
 }
+
 int chk_integrity(int s_x, int s_y, int e_x, int e_y)
 {
 	int tmp = map[s_x][s_y];
