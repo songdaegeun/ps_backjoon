@@ -2,7 +2,6 @@
 #include <queue>
 #include <tuple>
 #include <algorithm>
-#include <cstring>
 using namespace std;
 
 int map[101][101];
@@ -24,7 +23,7 @@ void disp_map()
 	}
 }
 // bfs_map_chk()로 대륙마다 visited = 1, 2, 3... chk.
-void bfs_map_chk()
+int bfs_map_chk()
 {
 	queue<pair<int,int>> q;
 	int conti_num = 0;
@@ -53,46 +52,43 @@ void bfs_map_chk()
 			}
 		}
 	}
+	return (conti_num);
 }
 
-// 모든 육지에 대한 bfs
-void bfs_dist()
+// conti_1, conti_2간 좌표차이로 거리 계산
+// 여기서 O(N^4)이고 comb_dist까지하면 O(N^6)이라서 timeover.
+void dist(int conti_1, int conti_2)
 {
-	int dist[101][101];
-	memset(dist, -1, sizeof(int) * 101 * 101);
-	queue<pair<int,int>> q;
-	for (int i = 0; i < n; i++)
+	for (int x1 = 0; x1 < n; x1++)
 	{
-		for (int j = 0; j < n; j++)
+		for (int y1 = 0; y1 < n; y1++)
 		{
-			if(visited[i][j] == 0) continue;
-			dist[i][j] = 0;
-			q.push({i, j});
-			while(!q.empty())
+			if(visited[x1][y1] == conti_1)
 			{
-				pair<int,int> pos =  q.front(); q.pop();
-				int x, y;
-				tie(x, y) = pos;
-				for (int i = 0; i < 4; i++)
+				for (int x2 = 0; x2 < n; x2++)
 				{
-					int nx = x + dx[i];
-					int ny = y + dy[i];
-					if(nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
-					if(dist[nx][ny] >= 0 || visited[nx][ny] == visited[i][j]) continue;
-					if(visited[nx][ny] != 0 && visited[nx][ny] != visited[i][j])
+					for (int y2 = 0; y2 < n; y2++)
 					{
-						while(!q.empty()) q.pop();  // clear q
-						if(dist[x][y] == 0)
-							cout << nx << ' ' << ny << '\n';
-						min_val = min(dist[x][y], min_val);
-						break;
+						if(visited[x2][y2] == conti_2)
+						{
+							int distance = abs(x1 - x2) + abs(y1 - y2) - 1;
+							if(distance == 0)
+								cout << "here" << x1 << ' ' << y1 << ' '<< x2 << ' '<< y2 << ' ';
+							min_val = min(min_val, distance);
+						}
 					}
-					dist[nx][ny] = dist[x][y] + 1;
-					q.push({nx, ny});
 				}
 			}
-			memset(dist, -1, sizeof(int) * 101 * 101);
 		}
+	}
+}
+
+void comb_dist(int conti_num, int start_i)
+{
+	for (int i = start_i + 1; i <= conti_num; i++)
+	{
+		dist(start_i, i);
+		comb_dist(conti_num, start_i + 1);
 	}
 }
 
@@ -110,9 +106,10 @@ int main()
 			cin >> map[i][j];
 		}
 	}
-	bfs_map_chk();
+	int conti_num;
+	conti_num = bfs_map_chk();
 	// 대륙의 개수 conti_num에 대해 vector<int> (conti_num, 0)으로 잡고, next_permutation으로 2개 선택(conti_1, conti_2).
-	bfs_dist();
+	comb_dist(conti_num, 1);
 	// 최소값 출력
 	cout << min_val;
 }
