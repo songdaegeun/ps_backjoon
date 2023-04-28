@@ -7,11 +7,9 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 	
-	for (int i = 0; i < 10; i++)
-	{
-		if(i == 2)
-			break;
-		cout << i << '\n';
-	}
+	vector<int> v1 = {0, 1};
+	vector<int> v2 = {0, 2};
 	
+	if(v1 == v2)
+		cout << "gi";	
 }
