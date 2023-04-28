@@ -5,7 +5,6 @@
 using namespace std;
 
 char map[12][6];
-// char ch[5] = {'R', 'G', 'B', 'P', 'Y'}; 
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
 
