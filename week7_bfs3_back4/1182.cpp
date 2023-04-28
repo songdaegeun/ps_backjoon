@@ -3,26 +3,22 @@ using namespace std;
 
 int n,s;
 int arr[23];
-int sum[23];
+// int sum[23];
 int cnt;
 
-void combi(int start_i, int depth, int m)
+void combi(int start_i, int depth, int m, int tot)
 {
     if(depth == m)
     {
-        int total = 0;
-        for (int i = 0; i < m; i++)
-            total += sum[i];
-        if(total == s)
+        if(tot == s)
             cnt++;
         return ;
     }
     for (int i = start_i; i < n; i++)
     {
-        sum[depth] = arr[i];
-        combi(i + 1, depth + 1, m);
+        // sum[depth] = arr[i];
+        combi(i + 1, depth + 1, m, tot + arr[i]);
     }
-    
 }
 
 int main()
@@ -37,7 +33,7 @@ int main()
     }
     for (int i = 1; i <= n; i++)
     {
-        combi(0, 0, i);
+        combi(0, 0, i, 0);
     }
     cout << cnt;
 }
