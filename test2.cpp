@@ -5,6 +5,7 @@
 using namespace std;
 
 vector<int> v;
+int answer = 0;
 
 int is_sosu(int num)
 {
@@ -20,32 +21,30 @@ int is_sosu(int num)
     return (1);
 }
 
+void brute(int depth, int num)
+{
+    if(depth == v.size())
+    {
+        int j = 0;
+        cout << num << '\n';
+        if(is_sosu(num))
+            answer++;
+        return;
+    }
+    num *= 10;
+    brute(depth + 1, num);
+    brute(depth + 1, num + v[depth]);
+}
+
 
 int solution(string numbers) {
     ios::sync_with_stdio(0);
     cin.tie(0);
     
-    int answer = 0;
     for(auto ch : numbers)
     {
         v.push_back(ch - '0');
     }
-    vector<int> idx_v;
-    for(int i = 0; i < v.size(); i++)
-        idx_v.push_back(i);
-    do
-    {
-        
-        int num = 0;
-        for(int i = 0; i < idx_v.size(); i++)
-        {
-            cout << idx_v[i] << ' ';
-            num += v[idx_v[i]];
-        }
-        cout << '\n';
-        if(is_sosu(num))
-            answer++;
-    }while(next_permutation(idx_v.begin(), idx_v.end()));
-    
+    brute(0, 0);
     return answer;
 }
