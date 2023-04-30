@@ -50,7 +50,6 @@ int sol(string *arr)
 				break;
 			}
 		}
-
 		for (int j = 0; j < cur_len; j++)
 		{
 			res.push_back('#');
