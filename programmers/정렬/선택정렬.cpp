@@ -1,7 +1,7 @@
 
 #include <iostream>
-#define METHOD1
-// #define METHOD2
+// #define METHOD1
+#define METHOD2
 using namespace std;
 
 int main()
@@ -28,16 +28,20 @@ int main()
     // 작은 걸 앞으로 보내는 방법
     for(int i = 0; i < 10; i++)
     {
+        int minidx = i;
         for (int j = i + 1; j < 10; j++)
         {
-            if(arr[i] > arr[j])
+            if(arr[minidx] > arr[j])
             {
-                int tmp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = tmp;
+                minidx = j;
             }
         }
+        int tmp = arr[minidx];
+        arr[minidx] = arr[i];
+        arr[i] = tmp;
     }
+
+
     #endif
     for (int i = 0; i < 10; i++)
     {
