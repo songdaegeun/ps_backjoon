@@ -12,7 +12,7 @@ int main()
     int arr[10] = {8,2,85,89,564,4,1,854,41,41};
     #ifdef METHOD1
     // 큰 걸 뒤로 보내는 방법
-    for (int i = 9; i > 0; i--)
+    for (int i = 10 - 1; i > 0; i--)
     {
         int maxidx = 0;
         for (int j = 1; j <= i; j++)
@@ -26,7 +26,7 @@ int main()
     #endif
     #ifdef METHOD2
     // 작은 걸 앞으로 보내는 방법
-    for(int i = 0; i < 10; i++)
+    for(int i = 0; i < 10 - 1; i++)
     {
         int minidx = i;
         for (int j = i + 1; j < 10; j++)
