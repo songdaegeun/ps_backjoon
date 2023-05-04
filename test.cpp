@@ -1,15 +1,9 @@
 #include <iostream>
-#define LEN 10
+#include <algorithm>
 using namespace std;
 
-int arr[LEN] = {5, 3, 2, 6, 1, 7, 3, 3, 5, 9};
+int n;
 
-void swap(int *a, int *b)
-{
-	int tmp = *a;
-	*a = *b;
-	*b = tmp;
-}
 
 int main()
 {
@@ -17,7 +11,4 @@ int main()
 	cin.tie(0);
 
 	
-	for (int i = 0; i < LEN; i++)
-		cout << arr[i] << ' ';
-	cout << '\n';
 }
