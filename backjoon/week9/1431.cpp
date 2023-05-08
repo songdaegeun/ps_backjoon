@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 vector<char> arr[51];
@@ -24,7 +25,7 @@ int rule(vector<char> a, vector<char> b) {
     } 
     // 사전순비교
     int i = 0;
-    while(i < a.size() && i < b.size()) {
+    while(i < (int)a.size() && i < (int)b.size()) {
         if(a[i] != b[i]) {
             return (a[i] < b[i]);
         }
