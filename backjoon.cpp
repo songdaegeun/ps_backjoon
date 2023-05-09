@@ -5,8 +5,7 @@ using namespace std;
 
 int n;
 long long arr[100001];
-long long cnt[100001];
-
+pair<long long, int> cnt[100001]; 
 
 int main()
 {
@@ -32,30 +31,30 @@ int main()
     // 다시 cnt를 max값과 같은 요소들을 ans_vec에 넣는다.
     // ans_vec[0]을 출력한다.
 
-    for (int i = 0; i < n; i++)
-    {
-        cout << arr[i] << ' ';
-    }
-    cout << '\n';
+    // long long ans = -1 * ((long long)1 << 62) - 1;  // 하한값 -2^-62 보다 작음.
+    long long ans;
+    int max_cnt = 0;
     int idx = 0;
-    cnt[idx]++;
+
+    cnt[idx].first = arr[idx];
+    cnt[idx].second++;
+    ans = arr[idx];
+    
     for (int i = 1; i < n; i++)
     {
         if(arr[i - 1] != arr[i])
         {
             idx++;
+            cnt[idx].first = arr[i];
         }
-        cnt[idx]++;
+        cnt[idx].second++;
+        if(max_cnt < cnt[idx].second)
+        {
+            max_cnt = cnt[idx].second;
+            ans = cnt[idx].first;
+        }
     }
-    int max = 0;
-    for (int i = 0; i <= idx; i++) {
-        if(max < cnt[i]) max = cnt[i];
-    }
-    vector<int> ans_v;
-    for (int i = 0; i <= idx; i++) {
-        if(max == cnt[i]) ans_v.push_back(cnt[i]);
-    }
-    cout << ans_v[0];
+    cout << ans;
 }
 
 // 5
@@ -63,4 +62,10 @@ int main()
 // 2
 // 1
 // 2
+// 1
+
+// 4
+// -2
+// 4
+// 1
 // 1
