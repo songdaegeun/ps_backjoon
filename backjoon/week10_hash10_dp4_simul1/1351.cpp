@@ -11,7 +11,7 @@ long long find_serial(long long n) {
 	if (serial[n]) return serial[n];	// base condition
 	// serial[n]이 존재하지 않는 경우
 	serial[n] = find_serial(n / p) + find_serial(n / q);
-	// memoization	
+	// memoization
 	return (serial[n]);
 }
 
