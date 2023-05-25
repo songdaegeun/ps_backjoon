@@ -2,9 +2,6 @@
 #include <queue>
 #include <cstring>
 #include <tuple>
-#define RED 1
-#define BLUE 2
-
 using namespace std;
 
 int n, m;
@@ -12,16 +9,13 @@ string map[11];
 pair<int,int> blue_pos;
 pair<int,int> red_pos;
 pair<int,int> hole_pos;
-int last_blue_dir = -1;
-int last_red_dir = -1;
 
-
-// int dist_blue[11][11];
-// int dist_red[11][11];
-pair<int,int> state[11][11];
-
+int dist_blue[11][11];
+int dist_red[11][11];
 int dx[4] = {1, 0, -1, 0};
 int dy[4] = {0, 1, 0, -1};
+int last_blue_dir = -1;
+int last_red_dir = -1;
 
 void dispmap() {
 	cout << '\n';
@@ -43,10 +37,9 @@ pair<int,int> tilt_map(int dir, int x, int y) {
 	while (map[nx][ny] != '#') {
 		nx += dx[dir];
 		ny += dy[dir];
+		
 		if(nx == hole_pos.first && ny == hole_pos.second)
 			break;
-		// if (state[x][y].first + 1 == state[nx][ny].first)
-		// 	break;
 	}
 	if(map[nx][ny] == '#') {
 		nx -= dx[dir];
@@ -57,20 +50,15 @@ pair<int,int> tilt_map(int dir, int x, int y) {
 	return (pos);
 }
 
-int bfs() {
-	// memset(dist_red, -1, sizeof(int) * 11 * 11);
+int bfs_red() {
+	memset(dist_red, -1, sizeof(int) * 11 * 11);
 	queue<pair<int,int>> q;
 
-	// dist_red[red_pos.first][red_pos.second] = 0;
-	state[red_pos.first][red_pos.second] = {0, RED};  // dist, color
-	state[blue_pos.first][blue_pos.second] = {0, BLUE};  // dist, color
+	dist_red[red_pos.first][red_pos.second] = 0;
 	q.push(red_pos);
-	q.push(blue_pos);
-	int ans = -1;
 	while(!q.empty()) {
-		int x, y, color;
+		int x, y;
 		tie(x,y) = q.front(); q.pop();
-		color = state[x][y].second;
 		for (int i = 0; i < 4; i++)
 		{
 			// 맵 기울이기
@@ -78,52 +66,61 @@ int bfs() {
 			int nx, ny;
 			new_pos = tilt_map(i, x, y);
 			tie(nx,ny) = new_pos;
-			if(nx == hole_pos.first && ny == hole_pos.second && color == RED && ans == -1) {
+			if(nx == hole_pos.first && ny == hole_pos.second) {
 				last_red_dir = i;
-				ans = state[x][y].first + 1;
+				return (dist_red[x][y] + 1);
 			}
-			if(nx == hole_pos.first && ny == hole_pos.second && color == BLUE) {
-				last_blue_dir = i;
-				if(state[x][y].first + 1 == ans && last_red_dir == last_blue_dir)
-					ans = -1;
-				return (ans);
-			}
+				
 			if(nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
-			if(state[nx][ny].first != -1) continue;
-			
-			if(state[nx][ny].second == BLUE) {
-				if (color == RED && state[x][y].first + 1 == state[nx][ny].first) {
-					state[nx - dx[i]][ny - dy[i]].first = state[x][y].first + 1;
-					state[nx - dx[i]][ny - dy[i]].second = color;
-					q.push({nx - dx[i], ny - dy[i]});
-				}
-			}
-			else if(state[nx][ny].second == RED) {
-				if (color == BLUE && state[x][y].first + 1 == state[nx][ny].first) {
-					state[nx - dx[i]][ny - dy[i]].first = state[x][y].first + 1;
-					state[nx - dx[i]][ny - dy[i]].second = color;
-					q.push({nx - dx[i], ny - dy[i]});
-				}
-			}
-			else { // empty
-				state[nx][ny].first = state[x][y].first + 1;
-				state[nx][ny].second = color;
-				q.push({nx, ny});
-			}
+			if(dist_red[nx][ny] != -1) continue;
+			dist_red[nx][ny] = dist_red[x][y] + 1;
+			q.push({nx, ny});
 		}
 	}
-	return (ans);	
+	return (-1);	
+}
+
+int bfs_blue() {
+	memset(dist_blue, -1, sizeof(int) * 11 * 11);
+	queue<pair<int,int>> q;
+
+	dist_blue[blue_pos.first][blue_pos.second] = 0;
+	q.push(blue_pos);
+	while(!q.empty()) {
+		int x, y;
+		tie(x,y) = q.front(); q.pop();
+		for (int i = 0; i < 4; i++)
+		{
+			// 맵 기울이기
+			pair<int,int> new_pos;
+			int nx, ny;
+			new_pos = tilt_map(i, x, y);
+			tie(nx,ny) = new_pos;
+			if(nx == hole_pos.first && ny == hole_pos.second) {
+				last_blue_dir = i;
+				return (dist_blue[x][y] + 1);
+			}
+			if(nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
+			if(dist_blue[nx][ny] != -1 || dist_red[ny][ny] != -1 && dist_blue[x][y] + 1 >= dist_red[ny][ny]) continue;
+			dist_blue[nx][ny] = dist_blue[x][y] + 1;
+			q.push({nx, ny});
+		}
+	}
+	return (-1);
 }
 
 int search_hole() {
-	int cnt;
+	int blue_cnt;
+	int red_cnt;
 	
-	cnt = bfs();
-	// cout << cnt << '\n';
+	red_cnt = bfs_red();
+	cout << red_cnt << '\n';
+	blue_cnt = bfs_blue();
+	cout << blue_cnt << '\n';
 
-	if(cnt > 10)
-		cnt = -1;
-	return (cnt);
+	if(blue_cnt == red_cnt && last_blue_dir == last_red_dir || red_cnt > 10)
+		red_cnt = -1;
+	return (red_cnt);
 }
 
 int main()
@@ -152,7 +149,6 @@ int main()
 				hole_pos.first = i;
 				hole_pos.second = j;
 			}
-			state[i][j].first = -1;
 		}
 	}
 	
@@ -172,14 +168,11 @@ int main()
 // 최소 몇 번 만에 빨간 구슬을 구멍을 통해 빼낼 수 있는지 출력한다. 만약, 10번 이하로 움직여서 빨간 구슬을 구멍을 통해 빼낼 수 없으면 -1을 출력한다.
 
 
-// 10 10
-// ##########
-// #RB....#.#
-// #..#.....#
-// #........#
-// #.O......#
-// #...#....#
-// #........#
-// #........#
-// #.......##
-// ##########
+// 7 7
+// #######
+// #...BR#
+// #.#####
+// #.....#
+// #####.#
+// #O....#
+// #######
