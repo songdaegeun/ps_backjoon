@@ -49,7 +49,7 @@ int bfs() {
 				}
 				else if (daytime == AFTERNOON) { // 밤에 벽을 만난경우.
 					int n_daytime = 1 - daytime;
-					if(dist[nx][ny][pull_down][n_daytime] != 0) continue;
+					if(dist[x][y][pull_down][n_daytime] != 0) continue;
 					dist[x][y][pull_down][n_daytime]  = cnt + 1;
 					q.push({x,y,pull_down,n_daytime});
 					// 한번 대기
