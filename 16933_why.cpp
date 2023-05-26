@@ -19,13 +19,13 @@ int bfs() {
 
 	while(!q.empty()) {
 		int x,y,pull_down,cnt,daytime;
-
+		
 		tie(x,y,pull_down) = q.front(); q.pop();
 		cnt = dist[x][y][pull_down].first;
 		daytime = dist[x][y][pull_down].second;
-		if(x == n - 1 && y == m - 1) {
+		if(x == n - 1 && y == m - 1)
 			return (cnt);
-		}
+
 		for (int i = 0; i < 4; i++)
 		{
 			int nx = x + dx[i];

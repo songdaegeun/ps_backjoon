@@ -25,6 +25,7 @@ int bfs() {
 		if(x == n - 1 && y == m - 1) {
 			return (cnt);
 		}
+			
 		for (int i = 0; i < 4; i++)
 		{
 			int nx = x + dx[i];
