@@ -1,73 +1,26 @@
+// Authored by : BaaaaaaaaaaarkingDog
+// Co-authored by : -
+// http://boj.kr/78a1da4606a04caab418333f8fa4f001
+#include <algorithm>
 #include <iostream>
-#include <queue>
-#include <tuple>
-#define AFTERNOON 1
-#define MORNING 0
 using namespace std;
 
-int n, m, k;
-string map[1001];
-int dist[1001][1001][11][2];
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, 1, 0, -1};
+int n;
+pair<int, int> s[100005]; // schedule, 정렬의 편의를 위해 {끝 시간, 시작 시간}으로 저장
 
-int bfs() {
-	queue<tuple<int,int,int,int>> q;
-
-	dist[0][0][0][0] = 1;
-	q.push({0,0,0,0});
-
-	while(!q.empty()) {
-		int x,y,pull_down,daytime,cnt;
-
-		tie(x,y,pull_down,daytime) = q.front(); q.pop();
-		cnt = dist[x][y][pull_down][daytime];
-		if(x == n - 1 && y == m - 1) {
-			return (cnt);
-		}
-		for (int i = 0; i < 4; i++)
-		{
-			int nx = x + dx[i];
-			int ny = y + dy[i];
-			if(nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-
-			if(map[nx][ny] == '0') {
-				int n_daytime = 1 - daytime;
-				if(dist[nx][ny][pull_down][n_daytime] != 0) continue;
-				dist[nx][ny][pull_down][n_daytime] = cnt + 1;
-				q.push({nx,ny,pull_down,n_daytime});
-			}
-			else if(map[nx][ny] == '1') {
-				if(pull_down == k) continue;
-				if(daytime == MORNING) { 
-					int n_pull_down = pull_down + 1;
-					int n_daytime = 1 - daytime;
-					if(dist[nx][ny][n_pull_down][n_daytime] != 0) continue;
-					dist[nx][ny][n_pull_down][n_daytime] = cnt + 1;
-					q.push({nx,ny,n_pull_down, n_daytime});
-				}
-				else if (daytime == AFTERNOON) { // 밤에 벽을 만난경우.
-					int n_daytime = 1 - daytime;
-					if(dist[nx][ny][pull_down][n_daytime] != 0) continue;
-					dist[x][y][pull_down][n_daytime]  = cnt + 1;
-					q.push({x,y,pull_down,n_daytime});
-					// 한번 대기
-				}
-			}
-		}
-	}
-	return (-1);
-}
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    
-	cin >> n >> m >> k;
-	cin.ignore();
-	for (int i = 0; i < n; i++)
-		cin >> map[i];
-
-	int ans = bfs();
-	cout << ans << '\n';
+int main(void){
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+  cin >> n;
+  for(int i = 0; i < n; i++)
+    cin >> s[i].second >> s[i].first;
+  sort(s,s+n); // 먼저 끝나는 시간을 비교하고, 끝나는 시간이 동일하면 시작 시간 순으로 정렬
+  int ans = 0;
+  int t = 0; // 현재 시간
+  for(int i = 0; i < n; i++){
+    if(t > s[i].second) continue; // 시작 시간이 현재 시간보다 이전인 회의라면 무시
+    ans++; // 시작 시간이 현재 시간 이후인 회의를 찾았으므로 회의의 수에 1 증가
+    t = s[i].first; // 현재 시간을 s[i]의 끝나는 시간으로 변경한다.
+  }
+  cout << ans;
 }
