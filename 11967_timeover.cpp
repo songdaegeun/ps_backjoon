@@ -5,6 +5,7 @@
 #include <cstring>
 using namespace std;
 
+int map[101][101];
 int visited[101][101];
 int state[101][101];                        // light
 vector<pair<int,int>> bulb_sw[101][101];    // 방마다 0개 이상의 switch를 갖는다.
@@ -43,7 +44,7 @@ void turn_on(int x, int y){
     }
 
     for(auto pos : bulb_sw[x][y]) {
-        if(bulb_sw[x][y].size() != 0 && can_reach(x,y,pos.first, pos.second))
+        if(bulb_sw[x][y].size() != 0 && can_reach(x,y,pos.first,pos.second))
             turn_on(pos.first, pos.second);
         // 불을 켠 방(pos.first, pos.second)에 스위치가 있고, 그 방에 도달할 수 있으면 그 방에서 다시 불을 켠다.
     }
