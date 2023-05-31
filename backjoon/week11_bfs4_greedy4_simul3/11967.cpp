@@ -77,8 +77,6 @@ void turn_on(){
         }
         
     }
-    
-
 }
 
 int main()

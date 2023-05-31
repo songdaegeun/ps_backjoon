@@ -96,6 +96,7 @@
 		"typeindex": "cpp",
 		"valarray": "cpp",
 		"xiosbase": "cpp",
-		"__tree": "cpp"
+		"__tree": "cpp",
+		"xutility": "cpp"
 	}
 }
