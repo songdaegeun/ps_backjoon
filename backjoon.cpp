@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <tuple>
+#include <cstring>
 using namespace std;
 
 int tc, n, m;
@@ -70,9 +71,20 @@ int bound_entry(char map[101][101], int i, int j, vector<char> &keys)
     return (0);
 }
 
+int adjacent(int i, int j, int visited[101][101])
+{
+    for (int k = 0; k < 4; k++)
+    {
+        int nx = i + dx[k];
+        int ny = j + dy[k];
+        if(visited[nx][ny] == 1)
+            return (1);
+    }
+    return (0);
+}
+
 int bsq(char map[][101], vector<pair<int,int>> &entry, vector<char> &keys)
 {
-    disp_map(map);
     queue<pair<int,int>> q;
     int visited[101][101];
     memset(visited, 0, sizeof(int) * 101 * 101);
@@ -82,34 +94,47 @@ int bsq(char map[][101], vector<pair<int,int>> &entry, vector<char> &keys)
         visited[el.first][el.second] = 1;
         q.push({el.first, el.second});
     }
-    while(!q.empty())
+    while(1)
     {
-        int x, y;
-        tie(x, y) = q.front(); q.pop();
-        cout << x << ' ' << y << '\n';
-        for (int i = 0; i < 4; i++)
+        while(!q.empty())
         {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
-            if(map[nx][ny] == '*' || visited[nx][ny]) continue;            
-            if(is_gate(map[nx][ny]) && !has_key(map[nx][ny], keys))
+            int x, y;
+            tie(x, y) = q.front(); q.pop();
+            for (int i = 0; i < 4; i++)
             {
-                // 덜탐색한 곳이 있으면 nx, ny push.
-                // 모두 탐색했으면 continue;
-                
-                continue;
+                int nx = x + dx[i];
+                int ny = y + dy[i];
+                if (nx < 0 || nx >= n || ny < 0 || ny >= m) continue;
+                if(map[nx][ny] == '*' || visited[nx][ny]) continue;            
+                if(is_gate(map[nx][ny]) && !has_key(map[nx][ny], keys)) continue;
+                if(!is_gate(map[nx][ny]) && map[nx][ny] != '.')
+                {
+                    if(map[nx][ny] == '$')
+                        cnt++;
+                    else
+                        keys.push_back(map[nx][ny]);
+                }
+                visited[nx][ny] = 1;
+                q.push({nx, ny});
             }
-            if(!is_gate(map[nx][ny]) && map[nx][ny] != '.')
-            {
-                if(map[nx][ny] == '$')
-                    cnt++;
-                else
-                    keys.push_back(map[nx][ny]);
-            }
-            visited[nx][ny] = 1;
-            q.push({nx, ny});
         }
+        // map에 벽이 아니고 방문하지않은 곳 중에 방문한 곳과 인접하고 key가 맞는 문이 있다면 q에 넣고 다시 탐색한다.
+        // 탐색영역이 이전과 그대로면 break.
+        int flag = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (visited[i][j] == 0 && is_gate(map[i][j]) && has_key(map[i][j], keys) && adjacent(i, j, visited))
+                {
+                    flag = 1;
+                    visited[i][j] = 1;
+                    q.push({i, j});
+                }
+            }
+        }
+        if(flag == 0)
+            break;
     }
     return (cnt);
 }
@@ -138,9 +163,9 @@ int main()
         cin.ignore();
         string tmp;
         getline(cin, tmp);
-        if(tmp != "0")
+        if (tmp != "0")
         {
-            for(auto ch: tmp)
+            for (auto ch: tmp)
                 keys.push_back(ch);
         }
         sol = 0;
@@ -157,7 +182,6 @@ int main()
     // 모든 입구를 queue에 넣는다.
     // 키에 해당하는 문은 통과한다.
     // 키를 획득하면 keys에 추가한다.
-
 }
 
 // 3
