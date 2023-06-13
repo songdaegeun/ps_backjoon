@@ -29,8 +29,7 @@ int main()
             else
                 cout << '>';
         }
-            
-        cnt++;    
+        cnt++; 
         cnt %= k; 
     }
     

@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stack>
+#include <list>
 using namespace std;
 
 int main()
@@ -7,51 +7,47 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
     
-	stack<char> st1;
-	stack<char> st2;
+	list<char> li;
 	string str;
 	cin >> str;
 	for(auto el:str) {
-		st1.push(el);
+		li.push_back(el);
 	}
 	int n;
 	cin >> n;
+	list<char>::iterator it = li.end();
 	while(n--)
 	{
 		char cmd;
 		cin >> cmd;
 		if(cmd == 'L')
 		{
-			if(!st1.empty()) {
-				st2.push(st1.top()); st1.pop();
-			}
-				
+			if(it != li.begin())
+				it--;
+
 		}
 		else if (cmd == 'D')
 		{
-			if(!st2.empty()) {
-				st1.push(st2.top()); st2.pop();
-			}
-				
+			if(it != li.end())
+				it++;
 		}
 		else if (cmd == 'B')
 		{
-			if(!st1.empty())
-				st1.pop();
+			if(it != li.begin()) {
+				it--;
+				it = li.erase(it);
+			}
 		}
 		else if (cmd == 'P')
 		{
 			char ch;
 			cin >> ch;
-			st1.push(ch);
+			li.insert(it, ch);
 		}
 	}
-	while(!st1.empty()) {
-		st2.push(st1.top()); st1.pop();
-	}
-	while(!st2.empty()) {
-		cout << st2.top();
-		st2.pop();
+	for(auto el: li)
+	{
+		cout << el;
 	}
 	cout << '\n';
 }
