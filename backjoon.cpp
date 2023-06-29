@@ -20,7 +20,6 @@ int main()
         int a, b;
         cin >> a >> b;
         map[a][b] = 1;
-        map[a][b+1] = 1;
     }
 
     vector<pair<int,int>> pos;
@@ -28,13 +27,12 @@ int main()
     {
         for (int j = 1; j < n; j++)
         {
-            if(map[i][j] != 1 && map[i][j+1] != 1) {
+            if((j == 1 || map[i][j-1] != 1) && (map[i][j+1] != 1) && map[i][j] != 1) {
                 pos.push_back({i,j});
             }
         }
     }
     for(int k = 0; k <= 3; k++) {
-
         vector<int> mask(pos.size(),0);
         for (int i = pos.size() - k; i < pos.size(); i++)
             mask[i] = 1;    
@@ -44,7 +42,6 @@ int main()
             {
                 if(mask[i]) {
                     map[pos[i].first][pos[i].second] = 1;
-                    map[pos[i].first][pos[i].second + 1] = 1;
                 }
             }
             // simulation
@@ -55,12 +52,11 @@ int main()
                 int x = 1; 
                 int y = j;
                 while(1) {
-                    if(map[x][y] == 1) {
-                        // 양옆확인 후 1인쪽으로 이동
+                    if(map[x][y] == 1 || (y-1 >= 1 && map[x][y-1])) {
                         if(y-1 >= 1 && map[x][y-1]) {
                             y--;
                         }
-                        else if(y+1 <= n && map[x][y+1]) {
+                        else {
                             y++;
                         }
                         x++;
@@ -76,6 +72,15 @@ int main()
                     }
                 }
             }
+            // for (int i = 1; i <= h; i++)
+            // {
+            //     cout << '\n';
+            //     for (int j = 1; j <= n; j++)
+            //     {
+            //         cout << map[i][j] << ' ';
+            //     }
+            // }
+            // cout << '\n';
             if(cnt == n) {
                 cout << k << '\n';
                 return (0);
@@ -85,7 +90,6 @@ int main()
             {
                 if(mask[i]) {
                     map[pos[i].first][pos[i].second] = 0;
-                    map[pos[i].first][pos[i].second + 1] = 0;
                 }
             }
         } while (next_permutation(mask.begin(), mask.end()));
