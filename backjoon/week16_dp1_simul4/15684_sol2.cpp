@@ -1,10 +1,10 @@
 #include<iostream>
  
 #define endl "\n"
+
 using namespace std;
  
 int N, M, H, Answer;
-int MAP[11][30];
 bool Visit[11][30];
  
 int Min(int A, int B) { if (A < B) return A; return B; }
@@ -37,7 +37,7 @@ bool Ladder_Game()
     return true;
 }
  
-void Select_Line(int Idx_i, int Idx_j, int Cnt)
+void Select_Line(int Idx, int Cnt)
 {
     if (Cnt >= 4) return;
     
@@ -47,7 +47,7 @@ void Select_Line(int Idx_i, int Idx_j, int Cnt)
         return;
     }
  
-    for (int i = Idx_i; i <= H; i++)
+    for (int i = Idx; i <= H; i++)
     {
         for (int j = 1; j < N; j++)
         {
@@ -56,7 +56,7 @@ void Select_Line(int Idx_i, int Idx_j, int Cnt)
             if (Visit[j + 1][i] == true) continue;
             
             Visit[j][i] = true;
-            Select_Line(i,j,Cnt + 1);
+            Select_Line(i, Cnt + 1);
             Visit[j][i] = false;
         }
     }
@@ -64,7 +64,7 @@ void Select_Line(int Idx_i, int Idx_j, int Cnt)
                             
 void Solution()
 {
-    Select_Line(1,1,0);    
+    Select_Line(1, 0);    
  
     if (Answer == 9999999) Answer = -1;
     
@@ -88,4 +88,3 @@ int main(void)
  
     return 0;
 }
- 
