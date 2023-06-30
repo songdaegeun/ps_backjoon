@@ -1,107 +1,52 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
 using namespace std;
 
-int n,m,h;
-int map[31][31];
+int map[101][101];
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, -1, 0, 1};
+
+void draw_curve(int x, int y, int g)
+{
+    if(g == 1) { 
+        map[y][x] = 1;
+        map[y][x+1] = 1;
+        return ;        
+    }
+    draw_curve(x,y,g-1);
+    // map을 반시계로 90돌림.
+}
+
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
     
-    cin >> n >> m >> h;
-    // h x n 격자에 m개의 가로선을 놓을 수 있다.
-    // 가로선이 놓일 수 있는 위치는 1,1 - h,n-1 중에 map[i][j] != 1 && map[i][j+1] != 1인 위치
-    
-    for (int i = 0; i < m; i++)
+    int n;
+    cin >> n;
+    for (int i = 0; i < n; i++)
     {
-        int a, b;
-        cin >> a >> b;
-        map[a][b] = 1;
+        int x, y, d, g;
+        cin >> x >> y >> d >> g;
+        // map에 dragon curve draw
+        draw_curve(x,y,g);
     }
 
-    vector<pair<int,int>> pos;
-    for (int i = 1; i <= h; i++)
+    int cnt = 0;
+    for (int i = 0; i < 100; i++)
     {
-        for (int j = 1; j < n; j++)
+        for (int j = 0; j < 100; j++)
         {
-            if((j == 1 || map[i][j-1] != 1) && (map[i][j+1] != 1) && map[i][j] != 1) {
-                pos.push_back({i,j});
+            if(map[i][j] && map[i][j+1] && map[i+1][j] && map[i+1][j+1]) {
+                cnt++;
             }
         }
     }
-    for(int k = 0; k <= 3; k++) {
-        vector<int> mask(pos.size(),0);
-        for (int i = pos.size() - k; i < pos.size(); i++)
-            mask[i] = 1;    
-        do
-        {
-            for (int i = 0; i < pos.size(); i++)
-            {
-                if(mask[i]) {
-                    map[pos[i].first][pos[i].second] = 1;
-                }
-            }
-            // simulation
-            // 세로 x, 가로 y 
-            int cnt = 0;
-            for (int j = 1; j <= n; j++)
-            {
-                int y = j;
-                for (int x = 1; x <= h; x++) {
-                    if(map[x][y] == 1) {
-                        y++;
-                    }
-                    else if(y-1 >= 1 && map[x][y-1]){
-                        y--;
-                    }
-                }
-                if(y == j) {
-                    cnt++;
-                }
-                else {
-                    break;
-                }
-            }
-            if(cnt == n) {
-                cout << k << '\n';
-                return (0);
-            }
-            // map복구
-            for (int i = 0; i < pos.size(); i++)
-            {
-                if(mask[i]) {
-                    map[pos[i].first][pos[i].second] = 0;
-                }
-            }
-            
-            for (int i = 0; i < pos.size(); i++)
-            {
-                if(mask[i]) {
-                    cout << '{' << pos[i].first << ',' << pos[i].second << '}';
-                }
-            }
-            cout << '\n';
-        } while (next_permutation(mask.begin(), mask.end()));
-    }
-    cout << -1 << '\n';
-    return (0);
-
-    // for (int i = 1; i <= h; i++)
-    // {
-    //     cout << '\n';
-    //     for (int j = 1; j <= n; j++)
-    //     {
-    //         cout << map[i][j] << ' ';
-    //     }
-    // }
+    cout << cnt << '\n';
 }
 
-// 5 6 6
-// 1 1
-// 3 1
-// 5 2
-// 4 3
-// 2 3
-// 1 4
+//  K(K > 1)세대 드래곤 커브는 K-1세대 드래곤 커브를 끝 점을 기준으로 90도 시계 방향 회전 시킨 다음, 그것을 끝 점에 붙인 것이다.
+
+// 3
+// 3 3 0 1
+// 4 2 1 3
+// 4 2 2 1
