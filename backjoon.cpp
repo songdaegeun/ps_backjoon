@@ -1,61 +1,87 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 
-int map[102][102];
-int dx[4] = {1, 0, -1, 0};
-int dy[4] = {0, -1, 0, 1};
+int phone[4];
+int map[4][21];
+
+void sol(int step, int path_num, int depth)
+{
+    if(depth == 10) {
+        
+        return ;
+    }
+    for (int i = 0; i < 4; i++)
+    {
+        int backup[4];
+        for (int j = 0; j < 4; j++)
+        {
+            backup[j] = phone[j];
+        }
+        int tmp_step;
+        if(can_set()) {
+            cin >> tmp_step;
+            step += tmp_step;
+            // step에 해당하는 점수 sum
+            phone[i] += map[path_num][step];
+        }
+        for (int j = 0; j < 4; j++)
+        {
+            phone[j] = backup[j];
+        }
+    }
+}
 
 int main()
 {
     ios::sync_with_stdio(0);
     cin.tie(0);
-    
-    int n;
-    cin >> n;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 4; i++)
     {
-        int x, y, d, g;
-        cin >> x >> y >> d >> g;
-
-        // map에 dragon curve draw
-        vector<int> v;
-        map[y][x] = 1;
-        v.push_back(d);
-        
-        while(g--) {
-            // generation up
-            int v_size = v.size();
-            for (int j = (v_size - 1); j >= 0; j--)
+        if(i == 0) {
+            for (int j = 0; j < 20; j++)
             {
-                v.push_back((v[j]+1)%4);
+                map[i][j] = (j+1)*2;
             }
         }
-        
-        for(auto el:v) {
-            if(el == 0) x++;
-            else if(el == 1) y--;
-            else if(el == 2) x--;
-            else if(el == 3) y++;
-            map[y][x] = 1;
-        }
-    }
-    int cnt = 0;
-    for (int i = 0; i < 100; i++)
-    {
-        for (int j = 0; j < 100; j++)
-        {
-            if(map[i][j] && map[i][j+1] && map[i+1][j] && map[i+1][j+1]) {
-                cnt++;
+        else if(i == 1) {
+            for (int j = 0; j < 15; j++)
+            {
+                map[i][j] = (j+1)*2;
             }
+            map[i][16] = 28;
+            map[i][17] = 27;
+            map[i][18] = 26;
+            map[i][19] = 25;
+            map[i][20] = 30;
+            map[i][21] = 35;
+            map[i][22] = 40;
+        }
+        else if(i == 2) {
+            for (int j = 0; j < 10; j++)
+            {
+                map[i][j] = (j+1)*2;
+            }
+            map[i][11] = 22;
+            map[i][12] = 24;
+            map[i][13] = 25;
+            map[i][14] = 30;
+            map[i][15] = 35;
+            map[i][16] = 40;
+        }
+        else if(i == 3) {
+            for (int j = 0; j < 5; j++)
+            {
+                map[i][j] = (j+1)*2;
+            }
+            map[i][6] = 13;
+            map[i][7] = 16;
+            map[i][8] = 19;
+            map[i][9] = 25;
+            map[i][10] = 30;
+            map[i][11] = 35;
+            map[i][12] = 40;
         }
     }
-    cout << cnt << '\n';
+    sol(0,0,0);
+
 }
-
-//  K(K > 1)세대 드래곤 커브는 K-1세대 드래곤 커브를 끝 점을 기준으로 90도 시계 방향 회전 시킨 다음, 그것을 끝 점에 붙인 것이다.
-
-// 3
-// 3 3 0 1
-// 4 2 1 3
-// 4 2 2 1
