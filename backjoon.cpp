@@ -3,11 +3,17 @@ using namespace std;
 
 int phone[4];
 int map[4][21];
+int ans;
 
 void sol(int step, int path_num, int depth)
 {
     if(depth == 10) {
-        
+        int tmp_sum = 0;
+        for (int i = 0; i < 4; i++)
+        {
+            tmp_sum += phone[i];
+        }
+        ans = max(ans, tmp_sum);
         return ;
     }
     for (int i = 0; i < 4; i++)
@@ -21,8 +27,20 @@ void sol(int step, int path_num, int depth)
         if(can_set()) {
             cin >> tmp_step;
             step += tmp_step;
-            // step에 해당하는 점수 sum
             phone[i] += map[path_num][step];
+            if(step == 10) {
+
+            }
+            else if(step == 20) {
+                
+            }
+            else if(step == 30) {
+                
+            }
+            else if(step == 25) {
+                
+            }
+            sol(step, path_num, depth + 1);
         }
         for (int j = 0; j < 4; j++)
         {
@@ -83,5 +101,5 @@ int main()
         }
     }
     sol(0,0,0);
-
+    cout << ans;
 }
