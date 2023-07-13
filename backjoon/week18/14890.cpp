@@ -112,7 +112,10 @@ int main()
 		{
 			int h = map[i][j];
 			
-			if((prev_h - 1) == h) {
+			if(prev_h == h) {
+				;
+			}
+			else if((prev_h - 1) == h) {
 				if ((n - j) >= l && can_set(i, j, 1)) {
 					// l만큼 tilt_road를 set
 					int cnt = l;
@@ -127,15 +130,11 @@ int main()
 					flag = 0;
 					break;
 				}
-				prev_h = h;
-			}
-			else if(prev_h == h) {
-				prev_h = h;
 			}
 			else {
 				flag = 0;
-				prev_h = h;
 			}
+			prev_h = h;
 		}
 		if(flag == 1) {
 			ans++;
@@ -147,7 +146,15 @@ int main()
 		{
 			int h = map[i][j];
 
-			if((prev_h - 1) == h) {
+			if(prev_h == h) {
+				if(tilt_road[i][j] == 1) {
+					j -= (l - 1);
+					prev_h = h + 1;
+				}
+				else
+					prev_h = h;
+			}
+			else if((prev_h - 1) == h) {
 				if ((j+1) >= l && can_set(i, j, -1)) {
 					// l만큼 tilt_road를 set
 					int cnt = l;
@@ -162,14 +169,6 @@ int main()
 					break;
 				}
 				prev_h = h;
-			}
-			else if(prev_h == h) {
-				if(tilt_road[i][j] == 1) {
-					j -= (l - 1);
-					prev_h = h + 1;
-				}
-				else
-					prev_h = h;
 			}
 			else {
 				flag = 0;
@@ -190,7 +189,10 @@ int main()
 		{
 			int h = map[i][j];
 			
-			if((prev_h - 1) == h) {
+			if(prev_h == h) {
+				;
+			}
+			else if((prev_h - 1) == h) {
 				if ((n - i) >= l && can_set(i, j, 2)) {
 					// l만큼 tilt_road를 set
 					int cnt = l;
@@ -205,15 +207,11 @@ int main()
 					flag = 0;
 					break;
 				}
-				prev_h = h;
-			}
-			else if(prev_h == h) {
-				prev_h = h;
 			}
 			else {
 				flag = 0;
-				prev_h = h;
 			}
+			prev_h = h;
 		}
 		if(flag == 1) {
 			ans++;
@@ -225,7 +223,16 @@ int main()
 		{
 			int h = map[i][j];
 
-			if((prev_h - 1) == h) {
+			if(prev_h == h) {
+				if(tilt_road[i][j] == 1) {
+					i -= (l - 1);
+					prev_h = h + 1;
+				}
+				else {
+					prev_h = h;
+				}
+			}
+			else if((prev_h - 1) == h) {
 				if ((i+1) >= l && can_set(i, j, -2)) {
 					// l만큼 tilt_road를 set
 					int cnt = l;
@@ -241,15 +248,6 @@ int main()
 					break;
 				}
 				prev_h = h;
-			}
-			else if(prev_h == h) {
-				if(tilt_road[i][j] == 1) {
-					i -= (l - 1);
-					prev_h = h + 1;
-				}
-				else {
-					prev_h = h;
-				}
 			}
 			else {
 				flag = 0;
