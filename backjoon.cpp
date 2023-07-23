@@ -3,8 +3,8 @@ using namespace std;
 
 int n,m,k;
 int A[11][11];		// 양분 투입량
-int state[11][11][3];	// [3]: {현재양분, 현재나이, 생존상태}
-
+vector<int> state[11][11][3];	// [3]: {현재양분, 현재나이, 생존상태}
+ 
 void spring() {
 
 }
@@ -34,7 +34,7 @@ int main()
 			// 양분 투입량 load
 			cin >> A[i][j];
 			// 현재양분 5로 초기화
-			state[i][j][0] = 5;
+			state[i][j][0].push_back(5);
 		}
 	}
 	while (m--)
@@ -42,7 +42,7 @@ int main()
 		int x,y,z;
 		cin >> x >> y >> z;
 		// 현재나이 load
-		state[x][y][1] = z;
+		state[x][y][1].push_back(z);
 	}
 	while(k--) {
 		spring();
