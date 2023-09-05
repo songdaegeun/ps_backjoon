@@ -105,7 +105,7 @@ int quick(int st, int en)
 	while(1)
 	{
 		// pivot보다 큰 순간의 l_idx결정.
-		while(l_idx <= r_idx && pivot >= arr[l_idx])
+		while(l_idx <= r_idx && pivot >= arr[l_idx]) 
 			l_idx++;
 		// pivot보다 작은 순간의 r_idx결정.
 		while(l_idx <= r_idx && pivot <= arr[r_idx])
