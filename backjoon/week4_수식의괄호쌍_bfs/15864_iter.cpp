@@ -69,7 +69,7 @@ void check_map()
         int brute = i;
         for(int j = 0; j < cctv.size(); j++)
         {
-            int dir = brute;
+            int dir = brute % 4;
             brute = brute / 4;
             int x = cctv[j].first;
             int y = cctv[j].second;
