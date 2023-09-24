@@ -98,6 +98,7 @@
 		"xiosbase": "cpp",
 		"__tree": "cpp",
 		"xutility": "cpp",
-		"xstring": "cpp"
+		"xstring": "cpp",
+		"dense": "cpp"
 	}
 }
