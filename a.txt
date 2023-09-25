@@ -1,0 +1,3 @@
+tmp_day_per_month:1 line:2
+tmp_day_per_month:-1 line:3
+Case #1: 3
