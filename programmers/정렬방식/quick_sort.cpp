@@ -47,7 +47,7 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    quick_sort(0, 10);
+    quick_sort(0, 10-1);
 
     for (int i = 0; i < 10; i++)
         cout << arr[i] << ' ';
