@@ -99,6 +99,7 @@
 		"__tree": "cpp",
 		"xutility": "cpp",
 		"xstring": "cpp",
-		"dense": "cpp"
+		"dense": "cpp",
+		"stdio.h": "c"
 	}
 }
