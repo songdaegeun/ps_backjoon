@@ -20,7 +20,7 @@ void swap(int *a, int *b)
 
 void bubble_sort()
 {
-	for (int i = 0; i < LEN; i++)
+	for (int i = 1; i < LEN; i++)
 	{
 		for (int j = 0; j < LEN - i; j++)
 		{
@@ -134,11 +134,11 @@ int main()
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 
-	// bubble_sort();
+	bubble_sort();
 	// select_sort();
 	// insert_sort();
 	// merge_sort(0, LEN);
-	quick_sort(0, LEN);
+	// quick_sort(0, LEN);
 
 	for (int i = 0; i < LEN; i++)
 		cout << arr[i] << ' ';
