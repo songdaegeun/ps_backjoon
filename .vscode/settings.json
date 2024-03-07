@@ -100,6 +100,7 @@
 		"xutility": "cpp",
 		"xstring": "cpp",
 		"dense": "cpp",
-		"stdio.h": "c"
+		"stdio.h": "c",
+		"__memory": "cpp"
 	}
 }
